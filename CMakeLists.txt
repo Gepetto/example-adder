@@ -9,6 +9,7 @@ set(PROJECT_DESCRIPTION
 set(PROJECT_URL https://github.com/${PROJECT_NAMESPACE}/${PROJECT_NAME})
 
 # Project options
+option(BUILD_PYTHON_INTERFACE "Build the python binding" ON)
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 # Project configuration
@@ -23,6 +24,7 @@ get_property(
     PROPERTY INTERFACE_INCLUDE_DIRECTORIES
 )
 include("${JRL_CMAKE_MODULES}/base.cmake")
+include("${JRL_CMAKE_MODULES}/python.cmake")
 
 # Project definition
 compute_project_args(PROJECT_ARGS LANGUAGES CXX)
@@ -36,12 +38,21 @@ if(BUILD_TESTING)
     set(BOOST_COMPONENTS ${BOOST_COMPONENTS} unit_test_framework)
 endif()
 
+if(BUILD_PYTHON_INTERFACE)
+  set(BOOST_COMPONENTS ${BOOST_COMPONENTS} python)
+  set(PYTHON_COMPONENTS Interpreter Development.Module)
+  findpython()
+  string(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
+  set(${PY_NAME}_INSTALL_DIR ${PYTHON_SITELIB}/${PY_NAME})
+endif()
+
 if(BOOST_COMPONENTS)
     find_package(Boost REQUIRED COMPONENTS ${BOOST_COMPONENTS})
 endif()
 
 # Main Library
-set(${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/gepadd.hpp)
+set(${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/gepadd.hpp
+                            include/${PROJECT_NAME}/python.hpp)
 
 set(${PROJECT_NAME}_SOURCES src/gepadd.cpp)
 
@@ -73,6 +84,11 @@ if(UNIX)
             INSTALL_RPATH
                 "${${PROJECT_NAMESPACE}-${PROJECT_NAME}_INSTALL_RPATH}"
     )
+endif()
+
+# Python Bindings
+if(BUILD_PYTHON_INTERFACE)
+  add_subdirectory(python)
 endif()
 
 # Unit tests
