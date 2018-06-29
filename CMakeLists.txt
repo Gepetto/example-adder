@@ -8,6 +8,7 @@ set(PROJECT_DESCRIPTION
 set(PROJECT_URL https://github.com/${PROJECT_NAMESPACE}/${PROJECT_NAME})
 
 # Project options
+option(BUILD_PYTHON_INTERFACE "Build the python binding" ON)
 option(SUFFIX_SO_VERSION "Suffix library name with its version" ON)
 
 # Project configuration
@@ -47,6 +48,8 @@ endif()
 
 # JRL-cmakemodule setup
 include("${JRL_CMAKE_MODULES}/base.cmake")
+include("${JRL_CMAKE_MODULES}/boost.cmake")
+include("${JRL_CMAKE_MODULES}/python.cmake")
 
 # Project definition
 compute_project_args(PROJECT_ARGS LANGUAGES CXX)
@@ -55,8 +58,17 @@ project(${PROJECT_NAME} ${PROJECT_ARGS})
 # Project dependencies
 find_package(Boost REQUIRED COMPONENTS unit_test_framework)
 
+if(BUILD_PYTHON_INTERFACE)
+  set(PYTHON_COMPONENTS Interpreter Development.Module)
+  findpython()
+  string(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
+  set(${PY_NAME}_INSTALL_DIR ${PYTHON_SITELIB}/${PY_NAME})
+  search_for_boost_python()
+endif()
+
 # Main Library
-set(${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/gepadd.hpp)
+set(${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/gepadd.hpp
+                            include/${PROJECT_NAME}/python.hpp)
 
 set(${PROJECT_NAME}_SOURCES src/gepadd.cpp)
 
@@ -80,6 +92,11 @@ if(UNIX)
     ${PROJECT_NAMESPACE}-${PROJECT_NAME}
     PROPERTIES INSTALL_RPATH
                "${${PROJECT_NAMESPACE}-${PROJECT_NAME}_INSTALL_RPATH}")
+endif()
+
+# Python Bindings
+if(BUILD_PYTHON_INTERFACE)
+  add_subdirectory(python)
 endif()
 
 # Unit tests
