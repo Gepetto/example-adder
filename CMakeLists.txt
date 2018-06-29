@@ -7,6 +7,9 @@ set(PROJECT_DESCRIPTION
     "This is an example project, to show how to use Gepetto's tools")
 set(PROJECT_URL https://github.com/${PROJECT_NAMESPACE}/${PROJECT_NAME})
 
+# Project options
+option(SUFFIX_SO_VERSION "Suffix library name with its version" ON)
+
 # Project configuration
 set(PROJECT_USE_CMAKE_EXPORT TRUE)
 set(CUSTOM_HEADER_DIR ${PROJECT_NAME})
@@ -48,3 +51,23 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
 # Project definition
 compute_project_args(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
+
+# Main Library
+set(${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/gepadd.hpp)
+
+set(${PROJECT_NAME}_SOURCES src/gepadd.cpp)
+
+add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES}
+                                   ${${PROJECT_NAME}_HEADERS})
+target_include_directories(
+  ${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+if(SUFFIX_SO_VERSION)
+  set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION})
+endif()
+
+# Installation
+install(
+  TARGETS ${PROJECT_NAME}
+  EXPORT ${TARGETS_EXPORT_NAME}
+  DESTINATION ${CMAKE_INSTALL_LIBDIR})
