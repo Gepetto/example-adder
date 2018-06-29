@@ -33,6 +33,9 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
 COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 
+# Project dependencies
+find_package(Boost REQUIRED COMPONENTS unit_test_framework)
+
 # Main Library
 set(${PROJECT_NAME}_HEADERS
   include/${PROJECT_NAME}/gepadd.hpp
