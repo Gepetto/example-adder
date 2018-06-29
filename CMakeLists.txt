@@ -29,6 +29,17 @@ compute_project_args(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 check_minimal_cxx_standard(17 ENFORCE)
 
+# Project dependencies
+set(BOOST_COMPONENTS)
+
+if(BUILD_TESTING)
+    set(BOOST_COMPONENTS ${BOOST_COMPONENTS} unit_test_framework)
+endif()
+
+if(BOOST_COMPONENTS)
+    find_package(Boost REQUIRED COMPONENTS ${BOOST_COMPONENTS})
+endif()
+
 # Main Library
 set(${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/gepadd.hpp)
 
@@ -45,9 +56,37 @@ target_include_directories(
     PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+# Main Executable
+add_executable(${PROJECT_NAMESPACE}-${PROJECT_NAME} src/main.cpp)
+target_link_libraries(
+    ${PROJECT_NAMESPACE}-${PROJECT_NAME}
+    ${PROJECT_NAME}::${PROJECT_NAME}
+)
+
+if(UNIX)
+    get_relative_rpath(${CMAKE_INSTALL_BINDIR}
+                       ${PROJECT_NAMESPACE}-${PROJECT_NAME}_INSTALL_RPATH
+    )
+    set_target_properties(
+        ${PROJECT_NAMESPACE}-${PROJECT_NAME}
+        PROPERTIES
+            INSTALL_RPATH
+                "${${PROJECT_NAMESPACE}-${PROJECT_NAME}_INSTALL_RPATH}"
+    )
+endif()
+
+# Unit tests
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
+
 # Installation
 install(
     TARGETS ${PROJECT_NAME}
     EXPORT ${TARGETS_EXPORT_NAME}
     DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+install(
+    TARGETS ${PROJECT_NAMESPACE}-${PROJECT_NAME}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
