@@ -12,3 +12,5 @@ SET(${PY_NAME}_PYTHON
   )
 
 INSTALL(FILES ${${PY_NAME}_PYTHON} DESTINATION ${${PY_NAME}_INSTALL_DIR})
+
+ADD_PYTHON_UNIT_TEST("py-add" "bindings/python/test_add.py" "bindings/python")
