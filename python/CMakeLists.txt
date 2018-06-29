@@ -15,3 +15,5 @@ set(${PY_NAME}_PYTHON
 foreach(python ${${PY_NAME}_PYTHON})
   PYTHON_INSTALL_ON_SITE(${PY_NAME} ${python})
 endforeach()
+
+ADD_PYTHON_UNIT_TEST("py-add" "python/test_add.py" "python")
