@@ -69,6 +69,19 @@ if(SUFFIX_SO_VERSION)
   set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION})
 endif()
 
+# Main Executable
+add_executable(${PROJECT_NAMESPACE}-${PROJECT_NAME} src/main.cpp)
+target_link_libraries(${PROJECT_NAMESPACE}-${PROJECT_NAME} ${PROJECT_NAME})
+
+if(UNIX)
+  get_relative_rpath(${CMAKE_INSTALL_BINDIR}
+                     ${PROJECT_NAMESPACE}-${PROJECT_NAME}_INSTALL_RPATH)
+  set_target_properties(
+    ${PROJECT_NAMESPACE}-${PROJECT_NAME}
+    PROPERTIES INSTALL_RPATH
+               "${${PROJECT_NAMESPACE}-${PROJECT_NAME}_INSTALL_RPATH}")
+endif()
+
 # Unit tests
 if(BUILD_TESTING)
   add_subdirectory(tests)
@@ -79,3 +92,5 @@ install(
   TARGETS ${PROJECT_NAME}
   EXPORT ${TARGETS_EXPORT_NAME}
   DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(TARGETS ${PROJECT_NAMESPACE}-${PROJECT_NAME}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
