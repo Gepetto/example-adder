@@ -1,0 +1,8 @@
+SET(${PROJECT_NAME}_HEADERS
+  gepadd.hpp
+  )
+
+INSTALL(FILES
+  ${${PROJECT_NAME}_HEADERS}
+  DESTINATION include/${PROJECT_NAME}
+  )
