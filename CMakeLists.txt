@@ -1,6 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 INCLUDE(cmake/base.cmake)
+INCLUDE(cmake/boost.cmake)
 INCLUDE(cmake/test.cmake)
 
 SET(PROJECT_NAME example-adder)
@@ -9,6 +10,10 @@ SET(PROJECT_DESCRIPTION "This is an example project, to show how to use Gepetto'
 SET(PROJECT_URL https://gepgitlab.laas.fr/gepetto/${PROJECT_NAME})
 
 SETUP_PROJECT()
+
+SET(BOOST_COMPONENTS unit_test_framework)
+SEARCH_FOR_BOOST()
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 ADD_SUBDIRECTORY(include/${PROJECT_NAME})
 ADD_SUBDIRECTORY(src)
