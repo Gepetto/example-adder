@@ -1,6 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 INCLUDE(cmake/base.cmake)
+INCLUDE(cmake/test.cmake)
 
 SET(PROJECT_NAME example-adder)
 SET(PROJECT_DESCRIPTION "This is an example project, to show how to use Gepetto's tools")
@@ -11,5 +12,6 @@ SETUP_PROJECT()
 
 ADD_SUBDIRECTORY(include/${PROJECT_NAME})
 ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(tests)
 
 SETUP_PROJECT_FINALIZE()
