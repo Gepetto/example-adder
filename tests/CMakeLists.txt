@@ -6,3 +6,7 @@ target_link_libraries(
     boost_add
     PRIVATE ${PROJECT_NAME}::${PROJECT_NAME} Boost::headers
 )
+
+if(BUILD_PYTHON_INTERFACE)
+    add_subdirectory(python)
+endif()
