@@ -7,6 +7,8 @@ set(PROJECT_DESCRIPTION "This is an example project, to show how to use Gepetto'
 set(PROJECT_URL https://gitlab.laas.fr/${PROJECT_NAMESPACE}/${PROJECT_NAME})
 
 # Project options
+option(BUILD_PYTHON_INTERFACE "Build the python binding" ON)
+option(INSTALL_PYTHON_INTERFACE_ONLY "Install *ONLY* the python bindings" OFF)
 option(SUFFIX_SO_VERSION "Suffix library name with its version" ON)
 
 # Project configuration
@@ -15,6 +17,7 @@ set(PROJECT_USE_CMAKE_EXPORT TRUE)
 # JRL-cmakemodule setup
 include(cmake/base.cmake)
 include(cmake/boost.cmake)
+include(cmake/python.cmake)
 
 # Project definition
 COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
@@ -22,6 +25,13 @@ project(${PROJECT_NAME} ${PROJECT_ARGS})
 
 # Project dependencies
 set(BOOST_COMPONENTS unit_test_framework)
+
+if(BUILD_PYTHON_INTERFACE)
+  FINDPYTHON()
+  string(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
+  set(${PY_NAME}_INSTALL_DIR ${PYTHON_SITELIB}/${PY_NAME})
+  set(BOOST_COMPONENTS ${BOOST_COMPONENTS} python)
+endif()
 
 SEARCH_FOR_BOOST()
 
@@ -44,6 +54,11 @@ endif()
 # Main Executable
 add_executable(${PROJECT_NAMESPACE}-${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAMESPACE}-${PROJECT_NAME} ${PROJECT_NAME})
+
+# Python Bindings
+if(BUILD_PYTHON_INTERFACE)
+  add_subdirectory(python)
+endif()
 
 # Unit tests
 add_subdirectory(tests)
