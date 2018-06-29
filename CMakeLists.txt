@@ -54,6 +54,17 @@ compute_project_args(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 check_minimal_cxx_standard(17 ENFORCE)
 
+# Project dependencies
+set(BOOST_COMPONENTS)
+
+if(BUILD_TESTING)
+  set(BOOST_COMPONENTS ${BOOST_COMPONENTS} unit_test_framework)
+endif()
+
+if(BOOST_COMPONENTS)
+  find_package(Boost REQUIRED COMPONENTS ${BOOST_COMPONENTS})
+endif()
+
 # Main Library
 set(${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/gepadd.hpp)
 
@@ -67,6 +78,11 @@ target_include_directories(
 
 if(SUFFIX_SO_VERSION)
   set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION})
+endif()
+
+# Unit tests
+if(BUILD_TESTING)
+  add_subdirectory(tests)
 endif()
 
 # Installation
