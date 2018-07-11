@@ -1,0 +1,12 @@
+dist: bionic
+language: python
+python:
+  - 2.7
+  - 3.6
+before_install:
+  - sudo apt-get install -y libboost-test-dev libboost-python-dev
+script:
+  - cmake .
+  - make
+  - make test
+  - sudo make install
