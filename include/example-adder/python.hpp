@@ -8,6 +8,7 @@
 namespace gepetto {
 namespace example {
 void exposeExampleAdder();
+void exposeActionUniEx();
 }  // namespace example
 }  // namespace gepetto
 

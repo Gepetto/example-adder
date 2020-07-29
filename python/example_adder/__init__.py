@@ -1,1 +1,2 @@
-from .example_adder import add, sub  # noqa: F401
+import crocoddyl
+from .example_adder import ActionModelUniEx, add, sub  # noqa: F401
