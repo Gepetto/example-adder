@@ -84,12 +84,20 @@ MACRO(FINDPYTHON)
       STRING(REGEX REPLACE "Python " "" _PYTHON_VERSION ${_PYTHON_VERSION_OUTPUT})
       STRING(REGEX REPLACE "\\." ";" _PYTHON_VERSION ${_PYTHON_VERSION})
       LIST(GET _PYTHON_VERSION 0 _PYTHON_VERSION_MAJOR)
+      LIST(GET _PYTHON_VERSION 1 _PYTHON_VERSION_MINOR)
 
       # Hint for finding the right Python version
       SET(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
       SET(Python${_PYTHON_VERSION_MAJOR}_EXECUTABLE ${PYTHON_EXECUTABLE})
 
-      FIND_PACKAGE("Python${_PYTHON_VERSION_MAJOR}" REQUIRED COMPONENTS Interpreter Development)
+      FIND_PACKAGE("Python${_PYTHON_VERSION_MAJOR}" REQUIRED COMPONENTS Interpreter)
+
+      FIND_PATH("Python${_PYTHON_VERSION_MAJOR}_INCLUDE_DIRS"
+        NAMES pyconfig.h
+        PATH_SUFFIXES
+        "include/python${_PYTHON_VERSION_MAJOR}.${_PYTHON_VERSION_MINOR}"
+        "include/python${_PYTHON_VERSION_MAJOR}.${_PYTHON_VERSION_MINOR}m"
+        )
     ELSE()
       # No hind was provided. We can then check for first Python 2, then Python 3
       FIND_PACKAGE(Python2 QUIET COMPONENTS Interpreter Development)
