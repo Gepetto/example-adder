@@ -7,6 +7,11 @@ target_link_libraries(
     PRIVATE ${PROJECT_NAME}::${PROJECT_NAME} Boost::headers
 )
 
+add_test(
+    NAME exe-fail
+    COMMAND ${CMAKE_BINARY_DIR}/${PROJECT_NAMESPACE}-${PROJECT_NAME} 3 4
+)
+
 if(BUILD_PYTHON_INTERFACE)
     add_subdirectory(python)
 endif()
