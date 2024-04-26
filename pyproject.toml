@@ -1,0 +1,23 @@
+[build-system]
+build-backend = "cmeel"
+requires = [
+  "cmeel-boost ~= 1.90.0",
+  "cmeel[build]",
+  "jrl-cmakemodules"
+]
+
+[project]
+authors = [{email = "guilhem.saurel@laas.fr", name = "Guilhem Saurel"}]
+dependencies = ["cmeel-boost ~= 1.90.0"]
+description = "This is an example project, to show how to use cmeel"
+license = "BSD-2-Clause"
+name = "example-adder"
+requires-python = ">= 3.10"
+version = "4.1.1"
+
+[project.urls]
+homepage = "https://github.com/gepetto/example-adder"
+repository = "https://github.com/gepetto/example-adder.git"
+
+[tool.tomlsort]
+all = true
