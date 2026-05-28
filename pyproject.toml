@@ -13,7 +13,7 @@ description = "This is an example project, to show how to use cmeel"
 license = "BSD-2-Clause"
 name = "example-adder"
 requires-python = ">= 3.10"
-version = "4.1.1"
+version = "4.2.0"
 
 [project.urls]
 homepage = "https://github.com/gepetto/example-adder"
