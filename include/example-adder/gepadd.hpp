@@ -5,7 +5,7 @@ namespace gepetto {
 namespace example {
 auto add(long a, long b) -> long;
 auto sub(long a, long b) -> long;
-} // namespace example
-} // namespace gepetto
+}  // namespace example
+}  // namespace gepetto
 
 #endif
