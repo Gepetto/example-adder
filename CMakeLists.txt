@@ -39,11 +39,11 @@ if(BUILD_TESTING)
 endif()
 
 if(BUILD_PYTHON_INTERFACE)
-  set(BOOST_COMPONENTS ${BOOST_COMPONENTS} python)
-  set(PYTHON_COMPONENTS Interpreter Development.Module)
-  findpython()
-  string(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
-  set(${PY_NAME}_INSTALL_DIR ${PYTHON_SITELIB}/${PY_NAME})
+    set(BOOST_COMPONENTS ${BOOST_COMPONENTS} python)
+    set(PYTHON_COMPONENTS Interpreter Development.Module)
+    findpython()
+    string(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
+    set(${PY_NAME}_INSTALL_DIR ${PYTHON_SITELIB}/${PY_NAME})
 endif()
 
 if(BOOST_COMPONENTS)
@@ -51,8 +51,10 @@ if(BOOST_COMPONENTS)
 endif()
 
 # Main Library
-set(${PROJECT_NAME}_HEADERS include/${PROJECT_NAME}/gepadd.hpp
-                            include/${PROJECT_NAME}/python.hpp)
+set(${PROJECT_NAME}_HEADERS
+    include/${PROJECT_NAME}/gepadd.hpp
+    include/${PROJECT_NAME}/python.hpp
+)
 
 set(${PROJECT_NAME}_SOURCES src/gepadd.cpp)
 
@@ -88,7 +90,7 @@ endif()
 
 # Python Bindings
 if(BUILD_PYTHON_INTERFACE)
-  add_subdirectory(python)
+    add_subdirectory(python)
 endif()
 
 # Unit tests

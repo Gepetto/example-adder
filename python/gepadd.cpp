@@ -6,5 +6,5 @@ void exposeExampleAdder() {
   boost::python::def("add", add);
   boost::python::def("sub", sub);
 }
-} // namespace example
-} // namespace gepetto
+}  // namespace example
+}  // namespace gepetto

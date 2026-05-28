@@ -5,5 +5,5 @@ namespace example {
 auto add(const long a, const long b) -> long { return a + b; }
 
 auto sub(const long a, const long b) -> long { return a - b; }
-} // namespace example
-} // namespace gepetto
+}  // namespace example
+}  // namespace gepetto

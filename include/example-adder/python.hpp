@@ -8,7 +8,7 @@
 namespace gepetto {
 namespace example {
 void exposeExampleAdder();
-} // namespace example
-} // namespace gepetto
+}  // namespace example
+}  // namespace gepetto
 
 #endif
