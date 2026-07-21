@@ -22,7 +22,7 @@ jobs:
         os: ["ubuntu-24.04", "ubuntu-24.04-arm", "macos-15-intel", "macos-15"]
         python: ["cp310", "cp311", "cp312", "cp313", "cp314"]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: 'true'
       - run: pipx install cibuildwheel
@@ -69,7 +69,7 @@ jobs:
   sdist:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: 'true'
       - uses: actions/setup-python@v6
@@ -114,7 +114,7 @@ jobs:
       id-token: write
       contents: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.ref_name }}
       - run: curl https://github.com/nim65s.gpg | gpg --import
